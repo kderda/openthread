@@ -1263,8 +1263,13 @@ start:
             header.SetHopLimit(header.GetHopLimit() - 1);
         }
 
-        VerifyOrExit(header.GetHopLimit() > 0, error = kErrorDrop);
-
+        if (header.GetHopLimit() == 0)
+        {
+#if OPENTHREAD_CONFIG_HOP_LIMIT_EXCEEDED_ERROR_ENABLED
+            SendIcmpError(aMessage, Icmp::Header::kTypeTimeExceeded, Icmp::Header::kCodeHopLimitEx);
+#endif
+            ExitNow(error = kErrorDrop);
+        }
         hopLimit = header.GetHopLimit();
         aMessage.Write(Header::kHopLimitFieldOffset, hopLimit);
 

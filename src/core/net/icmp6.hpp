@@ -98,6 +98,7 @@ public:
         enum Code : uint8_t
         {
             kCodeDstUnreachNoRoute = OT_ICMP6_CODE_DST_UNREACH_NO_ROUTE, ///< Destination Unreachable No Route
+            kCodeHopLimitEx        = OT_ICMP6_CODE_HOP_LIMIT_EX,         ///< Hop limit has been exceeded
             kCodeFragmReasTimeEx   = OT_ICMP6_CODE_FRAGM_REAS_TIME_EX,   ///< Fragment Reassembly Time Exceeded
         };
 

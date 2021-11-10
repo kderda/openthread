@@ -169,6 +169,7 @@ SOURCES_COMMON                                  = \
     api/tcp_api.cpp                               \
     api/thread_api.cpp                            \
     api/thread_ftd_api.cpp                        \
+    api/traceroute_api.cpp                        \
     api/udp_api.cpp                               \
     backbone_router/backbone_tmf.cpp              \
     backbone_router/bbr_leader.cpp                \
@@ -316,6 +317,7 @@ SOURCES_COMMON                                  = \
     utils/otns.cpp                                \
     utils/parse_cmdline.cpp                       \
     utils/ping_sender.cpp                         \
+    utils/traceroute.cpp                          \
     utils/slaac_address.cpp                       \
     utils/srp_client_buffers.cpp                  \
     $(NULL)

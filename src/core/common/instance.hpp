@@ -86,6 +86,8 @@
 #if OPENTHREAD_CONFIG_HISTORY_TRACKER_ENABLE
 #include "utils/history_tracker.hpp"
 #endif
+// TODO traceroute: add config value
+#include "utils/traceroute.hpp"
 
 #if (OPENTHREAD_CONFIG_THREAD_VERSION >= OT_THREAD_VERSION_1_2)
 #include "backbone_router/bbr_leader.hpp"
@@ -406,6 +408,8 @@ private:
 #if OPENTHREAD_CONFIG_HISTORY_TRACKER_ENABLE
     Utils::HistoryTracker mHistoryTracker;
 #endif
+
+    Utils::Traceroute mTraceroute;
 
 #if (OPENTHREAD_CONFIG_DATASET_UPDATER_ENABLE || OPENTHREAD_CONFIG_CHANNEL_MANAGER_ENABLE) && OPENTHREAD_FTD
     MeshCoP::DatasetUpdater mDatasetUpdater;
@@ -867,6 +871,11 @@ template <> inline Utils::HistoryTracker &Instance::Get(void)
     return mHistoryTracker;
 }
 #endif
+
+template <> inline Utils::Traceroute &Instance::Get(void)
+{
+    return mTraceroute;
+}
 
 #if (OPENTHREAD_CONFIG_DATASET_UPDATER_ENABLE || OPENTHREAD_CONFIG_CHANNEL_MANAGER_ENABLE) && OPENTHREAD_FTD
 template <> inline MeshCoP::DatasetUpdater &Instance::Get(void)

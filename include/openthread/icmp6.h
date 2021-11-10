@@ -75,6 +75,7 @@ typedef enum otIcmp6Type
 typedef enum otIcmp6Code
 {
     OT_ICMP6_CODE_DST_UNREACH_NO_ROUTE = 0, ///< Destination Unreachable No Route
+    OT_ICMP6_CODE_HOP_LIMIT_EX         = 0, ///< Hop limit has been exceeded
     OT_ICMP6_CODE_FRAGM_REAS_TIME_EX   = 1, ///< Fragment Reassembly Time Exceeded
 } otIcmp6Code;
 

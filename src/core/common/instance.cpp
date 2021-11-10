@@ -97,6 +97,7 @@ Instance::Instance(void)
 #if OPENTHREAD_CONFIG_HISTORY_TRACKER_ENABLE
     , mHistoryTracker(*this)
 #endif
+    , mTraceroute(*this)
 #if (OPENTHREAD_CONFIG_DATASET_UPDATER_ENABLE || OPENTHREAD_CONFIG_CHANNEL_MANAGER_ENABLE) && OPENTHREAD_FTD
     , mDatasetUpdater(*this)
 #endif

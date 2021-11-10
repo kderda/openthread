@@ -85,6 +85,8 @@
 #include <openthread/platform/trel-udp6.h>
 #endif
 
+#include "openthread/traceroute.h"
+
 #include "common/logging.hpp"
 #include "common/new.hpp"
 #include "common/string.hpp"
@@ -2707,6 +2709,22 @@ exit:
     return error;
 }
 #endif
+
+
+otError Interpreter::ProcessTraceroute(Arg *aArgs)
+{
+    otError error = OT_ERROR_NONE;
+
+    otIp6Address destination;
+
+    SuccessOrExit(error = aArgs[0].ParseAsIp6Address(destination));
+
+    otTracerouteStart(GetInstancePtr(), &destination);
+
+exit:
+    return error;
+}
+
 
 #if OPENTHREAD_FTD && OPENTHREAD_CONFIG_TMF_PROXY_MLR_ENABLE && OPENTHREAD_CONFIG_COMMISSIONER_ENABLE
 

@@ -568,6 +568,8 @@ private:
     otError ProcessRouterIdRange(Arg *aArgs);
 #endif
 
+    otError ProcessTraceroute(Arg *aArgs);
+
 #if OPENTHREAD_CONFIG_PING_SENDER_ENABLE
     static void HandlePingReply(const otPingSenderReply *aReply, void *aContext);
     static void HandlePingStatistics(const otPingSenderStatistics *aStatistics, void *aContext);
@@ -855,6 +857,7 @@ private:
         {"tcp", &Interpreter::ProcessTcp},
 #endif
         {"thread", &Interpreter::ProcessThread},
+        {"traceroute", &Interpreter::ProcessTraceroute},
 #if OPENTHREAD_CONFIG_RADIO_LINK_TREL_ENABLE
         {"trel", &Interpreter::ProcessTrel},
 #endif
