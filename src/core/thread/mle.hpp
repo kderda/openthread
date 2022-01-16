@@ -1756,6 +1756,7 @@ private:
                         const ConnectivityTlv &aConnectivityTlv,
                         uint8_t                aVersion);
     bool IsNetworkDataNewer(const LeaderData &aLeaderData);
+    void ProcessKeySequenceCounter(uint32_t aKeySequence, uint8_t aCommand, const Neighbor *aNeighbor);
 
 #if OPENTHREAD_CONFIG_TMF_NETDATA_SERVICE_ENABLE
     /**

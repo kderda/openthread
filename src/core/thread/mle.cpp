@@ -2684,11 +2684,6 @@ void Mle::HandleUdpReceive(Message &aMessage, const Ip6::MessageInfo &aMessageIn
     VerifyOrExit(memcmp(messageTag, tag, sizeof(tag)) == 0, error = OT_ERROR_SECURITY);
 #endif
 
-    if (keySequence > Get<KeyManager>().GetCurrentKeySequence())
-    {
-        Get<KeyManager>().SetCurrentKeySequence(keySequence);
-    }
-
     aMessage.SetOffset(mleOffset);
 
     IgnoreError(aMessage.Read(aMessage.GetOffset(), command));
@@ -2696,6 +2691,8 @@ void Mle::HandleUdpReceive(Message &aMessage, const Ip6::MessageInfo &aMessageIn
 
     neighbor = (command == kCommandChildIdResponse) ? mNeighborTable.FindParent(extAddr)
                                                     : mNeighborTable.FindNeighbor(extAddr);
+
+    ProcessKeySequenceCounter(keySequence, command, neighbor);
 
     if (neighbor != nullptr && neighbor->IsStateValid())
     {
@@ -3002,6 +2999,44 @@ bool Mle::IsNetworkDataNewer(const LeaderData &aLeaderData)
     }
 
     return (diff > 0);
+}
+
+void Mle::ProcessKeySequenceCounter(uint32_t aKeySequence, uint8_t aCommand, const Neighbor *aNeighbor)
+{
+    uint32_t current = Get<KeyManager>().GetCurrentKeySequence();
+
+    if (aKeySequence > current)
+    {
+        switch (aCommand)
+        {
+        case kCommandChildIdResponse:
+        case kCommandChildUpdateResponse:
+        case kCommandLinkAccept:
+        case kCommandLinkAcceptAndRequest:
+        case kCommandParentResponse:
+            // Authoritative messages - always update security material
+            Get<KeyManager>().SetCurrentKeySequence(aKeySequence);
+            break;
+
+        case kCommandAdvertisement:
+        case kCommandChildIdRequest:
+        case kCommandLinkMetricsManagementRequest:
+        case kCommandLinkMetricsManagementResponse:
+        case kCommandLinkProbe:
+        case kCommandDataRequest:
+        case kCommandDataResponse:
+            // Peer messages - max difference equal to 1 if synchronized
+            if (aNeighbor == nullptr || aKeySequence - current == 1)
+            {
+                Get<KeyManager>().SetCurrentKeySequence(aKeySequence);
+            }
+            break;
+
+        default:
+            // Tentative and unknown messages - security material must not be stored
+            break;
+        }
+    }
 }
 
 otError Mle::HandleLeaderData(const Message &aMessage, const Ip6::MessageInfo &aMessageInfo)
